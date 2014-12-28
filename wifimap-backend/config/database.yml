@@ -1,0 +1,13 @@
+development:
+    adapter: mysql2
+    encoding: utf8
+    database: wifimap
+    username: wifimap
+    password: wifimap
+
+production:
+    adapter: mysql2
+    encoding: utf8
+    database: wifimap
+    username: wifimap
+    password: wifimap
