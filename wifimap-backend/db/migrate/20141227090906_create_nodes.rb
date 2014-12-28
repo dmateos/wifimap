@@ -3,6 +3,11 @@ class CreateNodes < ActiveRecord::Migration
     create_table :nodes do |t|
       t.string :ssid
       t.string :mac
+      t.string :capabilities
+
+      t.integer :frequency
+      t.integer :signal
+
       t.float :lng
       t.float :lat
 

@@ -8,6 +8,9 @@
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:ssid) %></th>
       <th><%= model_class.human_attribute_name(:mac) %></th>
+      <th><%= model_class.human_attribute_name(:capabilities) %></th>
+      <th><%= model_class.human_attribute_name(:frequency) %></th>
+      <th><%= model_class.human_attribute_name(:signal) %></th>
       <th><%= model_class.human_attribute_name(:lng) %></th>
       <th><%= model_class.human_attribute_name(:lat) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
@@ -20,6 +23,9 @@
         <td><%= link_to node.id, node_path(node) %></td>
         <td><%= node.ssid %></td>
         <td><%= node.mac %></td>
+        <td><%= node.capabilities %></td>
+        <td><%= node.frequency %></td>
+        <td><%= node.signal %></td>
         <td><%= node.lng %></td>
         <td><%= node.lat %></td>
         <td><%=l node.created_at %></td>

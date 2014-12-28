@@ -30,6 +30,27 @@
     <%= error_span(@node[:mac]) %>
   </div>
   <div class="control-group">
+    <%= f.label :capabilities, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :capabilities, :class => 'form-control' %>
+    </div>
+    <%= error_span(@node[:capabilities]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :frequency, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :frequency, :class => 'form-control' %>
+    </div>
+    <%= error_span(@node[:frequency]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :signal, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :signal, :class => 'form-control' %>
+    </div>
+    <%= error_span(@node[:signal]) %>
+  </div>
+  <div class="control-group">
     <%= f.label :lng, :class => 'control-label' %>
     <div class="controls">
       <%= f.text_field :lng, :class => 'form-control' %>

@@ -43,11 +43,4 @@ class NodesController < ApplicationController
     end
 end
 
-module Api
-  class NodesController < Api::BaseController
-    private
-      def node_params
-        params.require(:node).permit(:ssid, :mac, :lng, :lat)
-      end
-  end
-end
+

@@ -37,14 +37,17 @@ public class WifiServer {
     }
 
     public void SendResults()  {
-        String path = "http://10.10.0.204:3000/api/nodes";
-        
+        String path = "http://wifimap.dev.mateos.cc/api/nodes";
+
         for(ScanResult res : apList) {
             try {
                 HashMap<String, String> params = new HashMap<String, String>();
 
                 params.put("ssid", res.SSID);
                 params.put("mac", res.BSSID);
+                params.put("capabilities", res.capabilities);
+                params.put("frequency", String.valueOf(res.frequency));
+                params.put("signal", String.valueOf(res.level));
                 params.put("lng", "0");
                 params.put("lat", "0");
 

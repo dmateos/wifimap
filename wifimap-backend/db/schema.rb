@@ -16,8 +16,11 @@ ActiveRecord::Schema.define(version: 20141227090906) do
   create_table "nodes", force: true do |t|
     t.string   "ssid"
     t.string   "mac"
-    t.float    "lng",        limit: 24
-    t.float    "lat",        limit: 24
+    t.string   "capabilities"
+    t.integer  "frequency"
+    t.integer  "signal"
+    t.float    "lng",          limit: 24
+    t.float    "lat",          limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
   end
