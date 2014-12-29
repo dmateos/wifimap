@@ -1,5 +1,6 @@
 package com.greywireit.wifimap_android;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -8,26 +9,36 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by dm on 29/12/14.
  */
-class SendJsonTask extends AsyncTask<JSONObject, Void, JSONObject> {
+class SendJsonTask extends AsyncTask<JSONObject, Void, List<JSONObject>> {
+    private Context context;
+
+    public SendJsonTask(Context context) {
+        this.context = context;
+    }
+
     @Override
-    protected JSONObject doInBackground(JSONObject... json) {
+    protected List<JSONObject> doInBackground(JSONObject... json) {
         //String path = "http://wifimap.dev.mateos.cc/api/nodes";
         String path = "http://10.10.0.204:3000/api/nodes/";
-        List<JSONObject> responses;
+        List<JSONObject> responses = new ArrayList<JSONObject>();
 
         for(JSONObject j : json) {
             try {
@@ -37,14 +48,19 @@ class SendJsonTask extends AsyncTask<JSONObject, Void, JSONObject> {
                 httpPost.setEntity(se);
                 httpPost.setHeader("Accept", "application/json");
                 httpPost.setHeader("Content-type", "application/json");
-                ResponseHandler responseHandler = new BasicResponseHandler();
-                httpClient.execute(httpPost, responseHandler);
-
+                HttpResponse response = httpClient.execute(httpPost);
+                responses.add(new JSONObject(EntityUtils.toString(response.getEntity())));
             } catch(Exception e) {
-
+                Log.v("error", e.getMessage());
             }
         }
-        return new JSONObject();
+        return responses;
+    }
+
+    protected void onPostExecute(List<JSONObject> result) {
+        for(JSONObject r : result) {
+            new AlertDialog.Builder(context).setTitle("OK").setMessage(r.toString()).show();
+        }
     }
 }
 
@@ -96,16 +112,19 @@ public class WifiServer {
 
     public void SendResults() {
         for (ScanResult res : apList) {
-            HashMap<String, String> params = new HashMap<String, String>();
-            params.put("ssid", res.SSID);
-            params.put("mac", res.BSSID);
-            params.put("capabilities", res.capabilities);
-            params.put("frequency", String.valueOf(res.frequency));
-            params.put("signal", String.valueOf(res.level));
-            params.put("lng", String.valueOf(locationListener.GetLng()));
-            params.put("lat", String.valueOf(locationListener.GetLat()));
-            JSONObject json = new JSONObject(params);
-            new SendJsonTask().execute(json);
+            try {
+                JSONObject params = new JSONObject();
+                params.put("ssid", res.SSID);
+                params.put("mac", res.BSSID);
+                params.put("capabilities", res.capabilities);
+                params.put("frequency", res.frequency);
+                params.put("signal", res.level);
+                params.put("lng", locationListener.GetLng());
+                params.put("lat", locationListener.GetLat());
+                new SendJsonTask(context).execute(params);
+            } catch(Exception e) {
+
+            }
         }
     }
 }

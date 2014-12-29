@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root :to => 'nodes#index'
+  root :to => 'pages#index'
 
   resources :nodes
 

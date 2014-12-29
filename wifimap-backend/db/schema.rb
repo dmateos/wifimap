@@ -25,4 +25,6 @@ ActiveRecord::Schema.define(version: 20141227090906) do
     t.datetime "updated_at"
   end
 
+  add_index "nodes", ["mac"], name: "index_nodes_on_mac", unique: true, using: :btree
+
 end
