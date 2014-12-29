@@ -50,8 +50,6 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
         wifilist.setAdapter(adapter);
 
         wifiServer = new WifiServer(this);
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
     }
 
 
