@@ -13,7 +13,5 @@ class CreateNodes < ActiveRecord::Migration
 
       t.timestamps
     end
-
-    add_index :nodes, :mac, unique: true
   end
 end
