@@ -1,31 +1,16 @@
 package com.greywireit.wifimap_android;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
-
-
-class WifiLocationListener implements LocationListener {
+class GeoLocationListener implements LocationListener {
     private double lng, lat;
     private LocationManager locationManager;
 
-    public WifiLocationListener(Context context) {
+    public GeoLocationListener(Context context) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 50000, 10, this);
 

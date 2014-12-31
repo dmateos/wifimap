@@ -17,7 +17,6 @@ import android.os.Build;
 
 
 public class MainActivity extends ActionBarActivity {
-    private WifiServer wifiServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +28,6 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
 
-        wifiServer = new WifiServer(this);
         Intent intent = new Intent(Intent.ACTION_SYNC, null, this, APUpdateService.class);
         startService(intent);
     }
