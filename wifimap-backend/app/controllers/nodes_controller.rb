@@ -31,6 +31,7 @@ class NodesController < ApplicationController
 
   def destroy
     @node.destroy
+    respond_with(Node)
   end
 
   private

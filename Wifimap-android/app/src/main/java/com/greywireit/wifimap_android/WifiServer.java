@@ -23,44 +23,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by dm on 29/12/14.
  */
-class SendJsonTask extends AsyncTask<JSONObject, Void, List<JSONObject>> {
-    private Context context;
+class WifiTimer extends TimerTask {
+    public void run() {
 
-    public SendJsonTask(Context context) {
-        this.context = context;
-    }
-
-    @Override
-    protected List<JSONObject> doInBackground(JSONObject... json) {
-        //String path = "http://wifimap.dev.mateos.cc/api/nodes";
-        String path = "http://10.10.0.204:3000/api/nodes/";
-        List<JSONObject> responses = new ArrayList<JSONObject>();
-
-        for(JSONObject j : json) {
-            try {
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(path);
-                StringEntity se = new StringEntity(j.toString());
-                httpPost.setEntity(se);
-                httpPost.setHeader("Accept", "application/json");
-                httpPost.setHeader("Content-type", "application/json");
-                HttpResponse response = httpClient.execute(httpPost);
-                responses.add(new JSONObject(EntityUtils.toString(response.getEntity())));
-            } catch(Exception e) {
-                Log.v("error", e.getMessage());
-            }
-        }
-        return responses;
-    }
-
-    protected void onPostExecute(List<JSONObject> result) {
-        for(JSONObject r : result) {
-            new AlertDialog.Builder(context).setTitle("OK").setMessage(r.toString()).show();
-        }
     }
 }
 
@@ -92,40 +63,3 @@ class WifiLocationListener implements LocationListener {
     public void onProviderEnabled(String provider) {}
     public void onStatusChanged(String provider, int status, Bundle extras) {}
 }
-
-public class WifiServer {
-    private Context context;
-    private List<ScanResult> apList;
-    private WifiLocationListener locationListener;
-
-    public WifiServer(Context context) {
-        this.context = context;
-        locationListener = new WifiLocationListener(context);
-    }
-
-    public List<ScanResult> GetWifiData() {
-        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        wifiManager.startScan();
-        this.apList = wifiManager.getScanResults();
-        return apList;
-    }
-
-    public void SendResults() {
-        for (ScanResult res : apList) {
-            try {
-                JSONObject params = new JSONObject();
-                params.put("ssid", res.SSID);
-                params.put("mac", res.BSSID);
-                params.put("capabilities", res.capabilities);
-                params.put("frequency", res.frequency);
-                params.put("signal", res.level);
-                params.put("lng", locationListener.GetLng());
-                params.put("lat", locationListener.GetLat());
-                new SendJsonTask(context).execute(params);
-            } catch(Exception e) {
-
-            }
-        }
-    }
-}
-
