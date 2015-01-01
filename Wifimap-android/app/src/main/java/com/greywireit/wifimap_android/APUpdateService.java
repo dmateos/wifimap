@@ -5,7 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.util.Log;
+import android.os.Bundle;
+import android.os.ResultReceiver;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -19,18 +20,27 @@ import java.util.List;
 
 public class APUpdateService extends IntentService {
     private List<ScanResult> wifiList;
+    private GeoLocationListener geoLocationListener;
 
     public APUpdateService() {
         super("APIUpdateService");
+        geoLocationListener = null;
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        String path = "http://wifimap.dev.mateos.cc/api/nodes";
         WifiManager wifiManager = (WifiManager)getSystemService(WIFI_SERVICE);
-
         wifiManager.startScan();
         wifiList = wifiManager.getScanResults();
+
+        if(geoLocationListener == null) {
+            geoLocationListener = new GeoLocationListener(this);
+        }
+
+        ResultReceiver receiver = intent.getParcelableExtra("receiver");
+
+        String path = "http://wifimap.dev.mateos.cc/api/nodes";
+        //String path = "http://10.10.0.204:3000/api/nodes";
 
         for (ScanResult scan : wifiList) {
             try {
@@ -40,8 +50,9 @@ public class APUpdateService extends IntentService {
                 params.put("capabilities", scan.capabilities);
                 params.put("frequency", scan.frequency);
                 params.put("signal", scan.level);
-                //params.put("lng", locationListener.GetLng());
-                //params.put("lat", locationListener.GetLat());
+                params.put("lng", geoLocationListener.GetLng());
+                params.put("lat", geoLocationListener.GetLat());
+
                 DefaultHttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(path);
                 StringEntity se = new StringEntity(params.toString());
@@ -50,6 +61,10 @@ public class APUpdateService extends IntentService {
                 httpPost.setHeader("Content-type", "application/json");
                 HttpResponse response = httpClient.execute(httpPost);
                 JSONObject responseObj = new JSONObject(EntityUtils.toString(response.getEntity()));
+
+                Bundle b = new Bundle();
+                b.putString("result", responseObj.toString());
+                receiver.send(0, b);
             } catch(Exception e) {
 
             }
