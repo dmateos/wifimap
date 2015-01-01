@@ -7,6 +7,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.ResultReceiver;
+import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -40,7 +41,7 @@ public class APUpdateService extends IntentService {
         ResultReceiver receiver = intent.getParcelableExtra("receiver");
 
         String path = "http://wifimap.dev.mateos.cc/api/nodes";
-        //String path = "http://10.10.0.204:3000/api/nodes";
+        //path = "http://10.10.0.204:3000/api/nodes";
 
         for (ScanResult scan : wifiList) {
             try {
@@ -67,6 +68,7 @@ public class APUpdateService extends IntentService {
                 receiver.send(0, b);
             } catch(Exception e) {
 
+                Log.v("exception", e.getMessage());
             }
         }
     }

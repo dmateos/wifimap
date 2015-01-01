@@ -22,7 +22,7 @@ class NodesController < ApplicationController
 
   def create
     @node = Node.new(node_params)
-    @node.save if Node.where(mac: params[:mac]).empty?
+    @node.save 
   end
 
   def update

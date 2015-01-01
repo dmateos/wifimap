@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 
 public class MainActivity extends ActionBarActivity implements APUpdateReceiver.Receiver {
     private AlarmManager alarmManager;
@@ -35,7 +37,7 @@ public class MainActivity extends ActionBarActivity implements APUpdateReceiver.
         }
 
         textView = new TextView(this);
-        textView = (TextView)findViewById(R.id.textView);
+        textView = (TextView) findViewById(R.id.textView);
         textView.setText("Wifimap 0.1\n---------\n");
 
         apUpdateReceiver = new APUpdateReceiver(new Handler());
@@ -89,14 +91,24 @@ public class MainActivity extends ActionBarActivity implements APUpdateReceiver.
     }
 
     public void onReceiveResult(int resultCode, Bundle resultData) {
-        String data = resultData.getString("result");
-        if(!data.contains("has already been taken")) {
-            if (textView.getLineCount() < 12) {
-                textView.append(resultData.getString("result") + "\n");
-            } else {
-                //textView.setText("Wifimap 0.1\n---------\n");
-                //textView.append(resultData.getString("result") + "\n");
+        try {
+            if (textView.getLineCount() >= 20) {
+                textView.setText("Wifimap 0.1\n---------\n");
             }
+
+            JSONObject jsonData = new JSONObject(resultData.getString("result"));
+            switch (jsonData.getInt("status")) {
+                case 1:
+                    textView.append("already exsists " + jsonData.getString("msg") + "\n");
+                    break;
+                case 2:
+                    textView.append("signal is better " + jsonData.getString("msg") + "\n");
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+
         }
     }
 }
