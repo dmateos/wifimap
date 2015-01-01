@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity implements APUpdateReceiver.
 
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 60, alarmIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 10, alarmIntent);
     }
 
 
@@ -89,6 +89,14 @@ public class MainActivity extends ActionBarActivity implements APUpdateReceiver.
     }
 
     public void onReceiveResult(int resultCode, Bundle resultData) {
-        textView.append(resultData.getString("result") + "\n");
+        String data = resultData.getString("result");
+        if(!data.contains("has already been taken")) {
+            if (textView.getLineCount() < 12) {
+                textView.append(resultData.getString("result") + "\n");
+            } else {
+                //textView.setText("Wifimap 0.1\n---------\n");
+                //textView.append(resultData.getString("result") + "\n");
+            }
+        }
     }
 }
