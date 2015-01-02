@@ -3,11 +3,15 @@ package com.greywireit.wifimap_android;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationListener;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
+
+import com.littlefluffytoys.littlefluffylocationlibrary.LocationInfo;
+import com.littlefluffytoys.littlefluffylocationlibrary.LocationLibrary;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -21,11 +25,9 @@ import java.util.List;
 
 public class APUpdateService extends IntentService {
     private List<ScanResult> wifiList;
-    private GeoLocationListener geoLocationListener;
 
     public APUpdateService() {
-        super("APIUpdateService");
-        geoLocationListener = null;
+        super("APUpdateService");
     }
 
     @Override
@@ -34,8 +36,11 @@ public class APUpdateService extends IntentService {
         wifiManager.startScan();
         wifiList = wifiManager.getScanResults();
 
-        if(geoLocationListener == null) {
-            geoLocationListener = new GeoLocationListener(this);
+        LocationInfo latestInfo = new LocationInfo(getBaseContext());
+
+        Log.v("debug", String.valueOf(latestInfo.getTimestampAgeInSeconds()));
+        if(latestInfo.getTimestampAgeInSeconds() > 30) {
+            LocationLibrary.forceLocationUpdate(getBaseContext());
         }
 
         ResultReceiver receiver = intent.getParcelableExtra("receiver");
@@ -51,8 +56,8 @@ public class APUpdateService extends IntentService {
                 params.put("capabilities", scan.capabilities);
                 params.put("frequency", scan.frequency);
                 params.put("signal", scan.level);
-                params.put("lng", geoLocationListener.GetLng());
-                params.put("lat", geoLocationListener.GetLat());
+                params.put("lng", latestInfo.lastLong);
+                params.put("lat", latestInfo.lastLat);
 
                 DefaultHttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(path);
@@ -61,14 +66,11 @@ public class APUpdateService extends IntentService {
                 httpPost.setHeader("Accept", "application/json");
                 httpPost.setHeader("Content-type", "application/json");
                 HttpResponse response = httpClient.execute(httpPost);
-                JSONObject responseObj = new JSONObject(EntityUtils.toString(response.getEntity()));
-
                 Bundle b = new Bundle();
-                b.putString("result", responseObj.toString());
+                b.putString("result", EntityUtils.toString(response.getEntity()));
                 receiver.send(0, b);
             } catch(Exception e) {
-
-                Log.v("exception", e.getMessage());
+                Log.v("debug", e.getMessage());
             }
         }
     }

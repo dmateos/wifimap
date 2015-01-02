@@ -13,6 +13,8 @@
       <th><%= model_class.human_attribute_name(:signal) %></th>
       <th><%= model_class.human_attribute_name(:lng) %></th>
       <th><%= model_class.human_attribute_name(:lat) %></th>
+      <th><%= model_class.human_attribute_name(:seencount) %></th>
+      <th><%= model_class.human_attribute_name(:updatecount) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -28,6 +30,8 @@
         <td><%= node.signal %></td>
         <td><%= node.lng %></td>
         <td><%= node.lat %></td>
+        <td><%= node.seencount %></td>
+        <td><%= node.updatecount %></td>
         <td><%=l node.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),

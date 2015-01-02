@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141227090906) do
+ActiveRecord::Schema.define(version: 20150102164654) do
 
   create_table "nodes", force: true do |t|
     t.string   "ssid"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 20141227090906) do
     t.float    "lat",          limit: 24
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "seencount"
+    t.integer  "updatecount"
   end
 
 end

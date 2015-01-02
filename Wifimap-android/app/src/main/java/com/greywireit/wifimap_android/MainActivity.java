@@ -16,14 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.littlefluffytoys.littlefluffylocationlibrary.LocationInfo;
+import com.littlefluffytoys.littlefluffylocationlibrary.LocationLibrary;
+
 import org.json.JSONObject;
 
 
 public class MainActivity extends ActionBarActivity implements APUpdateReceiver.Receiver {
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
-    public APUpdateReceiver apUpdateReceiver;
-
+    private APUpdateReceiver apUpdateReceiver;
     private TextView textView;
 
     @Override
@@ -36,9 +38,10 @@ public class MainActivity extends ActionBarActivity implements APUpdateReceiver.
                     .commit();
         }
 
-        textView = new TextView(this);
         textView = (TextView) findViewById(R.id.textView);
         textView.setText("Wifimap 0.1\n---------\n");
+
+        LocationLibrary.initialiseLibrary(getBaseContext(), "com.greywireit.wifimap_android");
 
         apUpdateReceiver = new APUpdateReceiver(new Handler());
         apUpdateReceiver.setReceiver(this);
@@ -90,6 +93,12 @@ public class MainActivity extends ActionBarActivity implements APUpdateReceiver.
         }
     }
 
+    enum STATUS {
+        OK,
+        ERR_DUPE,
+        UPDATE_SIGNAL,
+    }
+
     public void onReceiveResult(int resultCode, Bundle resultData) {
         try {
             if (textView.getLineCount() >= 20) {
@@ -97,18 +106,23 @@ public class MainActivity extends ActionBarActivity implements APUpdateReceiver.
             }
 
             JSONObject jsonData = new JSONObject(resultData.getString("result"));
-            switch (jsonData.getInt("status")) {
+            switch (jsonData.getInt("respcode")) {
+                case 0:
+                    textView.append("added new ap " + jsonData.getJSONObject("node").toString() + "\n");
+                    break;
                 case 1:
-                    textView.append("already exsists " + jsonData.getString("msg") + "\n");
+                    textView.append("already exists " + jsonData.getString("msg") + "\n");
                     break;
                 case 2:
                     textView.append("signal is better " + jsonData.getString("msg") + "\n");
                     break;
                 default:
+                    textView.append("unknown message\n");
                     break;
             }
         } catch (Exception e) {
-
+            //Log.v("debug2", e.getMessage());
+            //Log.v("debug2", resultData.getString(("result")));
         }
     }
 }
