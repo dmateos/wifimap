@@ -7,8 +7,6 @@ module Api
       @node = Node.find_by(mac: params[:mac])
       if @node.nil?
         @node = Node.new(node_params)
-        @node.seencount = 1
-        @node.updatecount = 1
         if @node.save
           render :show, status: :created
         end

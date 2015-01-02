@@ -11,20 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150102164654) do
+ActiveRecord::Schema.define(version: 20141227090906) do
 
   create_table "nodes", force: true do |t|
-    t.string   "ssid"
-    t.string   "mac"
+    t.string   "ssid",                                null: false
+    t.string   "mac",                                 null: false
     t.string   "capabilities"
     t.integer  "frequency"
-    t.integer  "signal"
+    t.integer  "signal",                              null: false
     t.float    "lng",          limit: 24
     t.float    "lat",          limit: 24
+    t.integer  "seencount",               default: 1
+    t.integer  "updatecount",             default: 1
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "seencount"
-    t.integer  "updatecount"
   end
 
 end
