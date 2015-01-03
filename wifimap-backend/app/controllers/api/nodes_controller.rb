@@ -14,10 +14,7 @@ module Api
         @node.seencount += 1
         if @node.signal < params[:signal]
           old_signal = @node.signal
-          @node.frequency = params[:frequency]
-          @node.signal = params[:signal]
-          @node.lat = params[:lat]
-          @node.lng = params[:lng] 
+          @node.update(node_update_signal_params)
           @node.updatecount += 1
           @node.save
           render json: {respcode: STATUS_UPDATE_SIGNAL, msg: "#{@node.ssid} #{params[:signal]}/#{old_signal}" }, status: :unprocessable_entity
@@ -31,6 +28,10 @@ module Api
     private
       def node_params
         params.require(:node).permit( :ssid, :mac, :capabilities, :frequency, :signal, :lng, :lat )
+      end
+
+      def node_update_signal_params
+        params.require(:node).permit( :frequency, :signal, :lat, :lng )
       end
   end
 end

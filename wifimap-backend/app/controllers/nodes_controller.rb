@@ -23,10 +23,12 @@ class NodesController < ApplicationController
   def create
     @node = Node.new(node_params)
     @node.save 
+    respond_with(@node)
   end
 
   def update
     @node.update(node_params)
+    respond_with(@node)
   end
 
   def destroy
@@ -40,7 +42,7 @@ class NodesController < ApplicationController
     end
 
     def node_params
-      params.require(:node).permit(:ssid, :mac, :lng, :lat)
+      params.require(:node).permit(:ssid, :mac, :lng, :lat, :signal, :frequency, :capabilities)
     end
 end
 
