@@ -50,7 +50,9 @@ public class APUpdateService extends IntentService {
 
         for (ScanResult scan : wifiList) {
             try {
+                JSONObject node = new JSONObject();
                 JSONObject params = new JSONObject();
+
                 params.put("ssid", scan.SSID);
                 params.put("mac", scan.BSSID);
                 params.put("capabilities", scan.capabilities);
@@ -59,9 +61,11 @@ public class APUpdateService extends IntentService {
                 params.put("lng", latestInfo.lastLong);
                 params.put("lat", latestInfo.lastLat);
 
+                node.put("node", params);
+
                 DefaultHttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(path);
-                StringEntity se = new StringEntity(params.toString());
+                StringEntity se = new StringEntity(node.toString());
                 httpPost.setEntity(se);
                 httpPost.setHeader("Accept", "application/json");
                 httpPost.setHeader("Content-type", "application/json");
