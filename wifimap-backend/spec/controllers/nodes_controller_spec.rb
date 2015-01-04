@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe NodesController, :type => :controller do
+RSpec.describe NodesController, type: :controller do
   describe "GET #index" do
     it "renderes the index template" do
       get :index
@@ -86,7 +86,7 @@ RSpec.describe NodesController, :type => :controller do
     end
   end
   
-  describe "DELETE destroy" do
+  describe "DELETE #destroy" do
     before :each do
       @node = Node.create(ssid: "", mac: "", signal: 0)
     end
