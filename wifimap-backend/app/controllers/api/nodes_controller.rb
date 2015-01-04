@@ -27,6 +27,11 @@ module Api
       end
     end
 
+    def update
+      @node = Node.find_by(mac: params[:node][:mac])
+      authorize @node
+    end
+
     private
       def node_params
         params.require(:node).permit( :ssid, :mac, :capabilities, :frequency, :signal, :lng, :lat )

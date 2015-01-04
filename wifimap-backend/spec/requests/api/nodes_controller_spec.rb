@@ -85,4 +85,14 @@ RSpec.describe "Nodes API (/api/nodes/)", type: :request do
       expect(node.signal).to eq(-100)
     end
   end
+
+=begin
+  describe "PUT #update" do
+    it" tries to update an exsisting node" do
+      node = Node.create(ssid: "test1", mac: "", signal: -100) 
+      put "/api/nodes/#{node.id}", id: node, node: { ssid: "test", mac: "00:00:00", signal: 10 }, 
+          format: :json 
+    end
+  end
+=end
 end
