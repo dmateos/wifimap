@@ -14,24 +14,29 @@ class NodesController < ApplicationController
 
   def new
     @node = Node.new
+    authorize @node
     respond_with(@node)
   end
 
   def edit
+    authorize @node
   end
 
   def create
     @node = Node.new(node_params)
+    authorize @node
     @node.save 
     respond_with(@node)
   end
 
   def update
+    authorize @node
     @node.update(node_params)
     respond_with(@node)
   end
 
   def destroy
+    authorize @node
     @node.destroy
     respond_with(Node)
   end
