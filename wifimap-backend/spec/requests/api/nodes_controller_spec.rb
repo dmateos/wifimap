@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe "Nodes API", type: :request do
-  describe "GET /api/nodes" do 
+RSpec.describe "Nodes API (/api/nodes/)", type: :request do
+  describe "GET #index" do 
     it "gets a json index with 0 nodes" do
       get "/api/nodes/", format: :json
       expect(response).to be_success
@@ -22,7 +22,7 @@ RSpec.describe "Nodes API", type: :request do
     end
   end
 
-  describe "GET /api/nodes/[id]" do
+  describe "GET #show" do
     it "gets a json entry" do
       node = Node.create(ssid: "test1", mac: "0", signal: 0)
 
@@ -42,7 +42,7 @@ RSpec.describe "Nodes API", type: :request do
     end
   end
 
-  describe "POST /api/nodes/" do
+  describe "POST #create" do
     it "adds a new node" do
       post "/api/nodes/", node: { ssid: "test1", mac: 0, signal: 0 }, format: :json
       
