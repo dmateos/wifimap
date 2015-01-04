@@ -29,29 +29,31 @@ RSpec.describe NodesController, type: :controller do
 
   describe "GET #new" do
     context "with admin user" do
-      it "assigns a new contact to @contact" do
+      before :each do
         sign_in FactoryGirl.create(:admin_user)
         get :new
+      end
+
+      it "assigns a new contact to @contact" do
         expect(assigns(:node)).to be_a(Node)
       end
 
       it "renderes the new template" do
-        sign_in FactoryGirl.create(:admin_user)
-        get :new
         expect(response).to render_template("new")
       end
     end
 
     context "with normal user" do
-      it "assigns a new contact to @contact" do
+      before :each do
         sign_in FactoryGirl.create(:user)
         get :new
+      end
+
+      it "assigns a new contact to @contact" do
         expect(assigns(:node)).to be_a(Node)
       end
 
       it "redirects new to index" do
-        sign_in FactoryGirl.create(:user)
-        get :new
         expect(response).to redirect_to(root_path)
       end
     end
@@ -59,34 +61,33 @@ RSpec.describe NodesController, type: :controller do
 
   describe "GET #edit" do
     context "with admin user" do
-      it "assigns edit contact to @edit" do
+      before :each do
         sign_in FactoryGirl.create(:admin_user)
-        node = Node.create(ssid: "", mac: "", signal: 0)
-        get :edit, id: node
-        expect(assigns(:node)).to eq(node)
+        @node = Node.create(ssid: "", mac: "", signal: 0)
+        get :edit, id: @node
+      end
+
+      it "assigns edit contact to @edit" do
+        expect(assigns(:node)).to eq(@node)
       end
 
       it "renderes the edit template" do
-        sign_in FactoryGirl.create(:admin_user)
-        node = Node.create(ssid: "", mac: "", signal: 0)
-        get :edit, id: node
         expect(response).to render_template("edit")
       end
-
     end
 
     context "with normal user" do
-      it "assigns edit contact to @edit" do
+      before :each do
         sign_in FactoryGirl.create(:user)
-        node = Node.create(ssid: "", mac: "", signal: 0)
-        get :edit, id: node
-        expect(assigns(:node)).to eq(node)
+        @node = Node.create(ssid: "", mac: "", signal: 0)
+        get :edit, id: @node
+      end
+
+      it "assigns edit contact to @edit" do
+        expect(assigns(:node)).to eq(@node)
       end
 
       it "redirects edit to index" do
-        sign_in FactoryGirl.create(:user)
-        node = Node.create(ssid: "", mac: "", signal: 0)
-        get :edit, id: node
         expect(response).to redirect_to(root_path)
       end
     end
@@ -94,30 +95,34 @@ RSpec.describe NodesController, type: :controller do
 
   describe "POST #create" do
     context "with admin user" do
-      it "creates the requested node" do
+      before :each do
         sign_in FactoryGirl.create(:admin_user)
+      end
+
+      it "creates the requested node" do
         expect {
           post :create, node: {ssid: "test", mac: "00:00:00", signal: 10}
         }.to change(Node, :count).by(1)
       end
 
       it "redirects to the new node" do
-        sign_in FactoryGirl.create(:admin_user)
         post :create, node: {ssid: "test", mac: "00:00:00", signal: 10}
         expect(response).to redirect_to(Node.last)
       end
     end
 
     context "with normal user" do
-      it "fails to create the requested node" do
+      before:each do
         sign_in FactoryGirl.create(:user)
+      end
+
+      it "fails to create the requested node" do
         expect {
           post :create, node: {ssid: "test", mac: "00:00:00", signal: 10}
         }.to change(Node, :count).by(0)
       end
 
       it "redirects create to index" do
-        sign_in FactoryGirl.create(:user)
         post :create, node: {ssid: "test", mac: "00:00:00", signal: 10}
         expect(response).to redirect_to(root_path)
       end
@@ -130,42 +135,44 @@ RSpec.describe NodesController, type: :controller do
     end
 
     context "with admin user" do
-      it "located the requested node" do
+      before :each do
         sign_in FactoryGirl.create(:admin_user)
+      end
+
+      it "located the requested node" do
         put :update, id: @node, node: {ssid: "test", mac: "00:00:00", signal: 10}
         expect(assigns(:node)).to eq(@node)
       end 
 
       it "changes @nodes values" do
-        sign_in FactoryGirl.create(:admin_user)
         put :update, id: @node, node: { ssid: "test", mac: "00:00:00", signal: 11 }
         @node.reload
         expect(@node.ssid).to eq("test")
       end
 
       it "redirects to the updated node" do
-        sign_in FactoryGirl.create(:admin_user)
         put :update, id: @node, node: { ssid: "test", mac: "00:00:00", signal: 11 }
         expect(response).to redirect_to(@node)
       end
     end
 
     context "with normal user" do 
-      it "located the requested node" do
+      before do
         sign_in FactoryGirl.create(:user)
+      end
+
+      it "located the requested node" do
         put :update, id: @node, node: {ssid: "test", mac: "00:00:00", signal: 10}
         expect(assigns(:node)).to eq(@node)
       end
 
       it "does not change @nodes values" do
-        sign_in FactoryGirl.create(:user)
         put :update, id: @node, node: { ssid: "test", mac: "00:00:00", signal: 11 }
         @node.reload
         expect(@node.ssid).to eq("")
       end
 
       it "redirects update to index" do
-        sign_in FactoryGirl.create(:user)
         put :update, id: @node, node: {ssid: "test", mac: "00:00:00", signal: 10}
         expect(response).to redirect_to(root_path)
       end
@@ -178,30 +185,34 @@ RSpec.describe NodesController, type: :controller do
     end
 
     context "with admin user" do
-      it "destroys the requested node" do
+      before :each do
         sign_in FactoryGirl.create(:admin_user)
+      end
+
+      it "destroys the requested node" do
         expect {
           delete :destroy, id: @node
         }.to change(Node, :count).by(-1)
       end
 
       it "redirects to node#index" do
-        sign_in FactoryGirl.create(:admin_user)
         delete :destroy, id: @node
         expect(response).to redirect_to(Node) 
       end
     end
 
     context "with normal user" do
-      it "doesnt destroy the requested node" do
+      before :each do 
         sign_in FactoryGirl.create(:user)
+      end
+
+      it "doesnt destroy the requested node" do
         expect {
           delete :destroy, id: @node
         }.to change(Node, :count).by(0)
       end
 
       it "redirects to index" do
-        sign_in FactoryGirl.create(:user)
         delete :destroy, id: @node
         expect(response).to redirect_to(root_path) 
       end
