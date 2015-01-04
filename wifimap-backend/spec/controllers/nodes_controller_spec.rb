@@ -34,7 +34,7 @@ RSpec.describe NodesController, type: :controller do
         get :new
       end
 
-      it "assigns a new contact to @contact" do
+      it "assigns a new node to @node" do
         expect(assigns(:node)).to be_a(Node)
       end
 
@@ -49,7 +49,7 @@ RSpec.describe NodesController, type: :controller do
         get :new
       end
 
-      it "assigns a new contact to @contact" do
+      it "assigns a new node to @node" do
         expect(assigns(:node)).to be_a(Node)
       end
 
@@ -67,7 +67,7 @@ RSpec.describe NodesController, type: :controller do
         get :edit, id: @node
       end
 
-      it "assigns edit contact to @edit" do
+      it "assigns edit node to @edit" do
         expect(assigns(:node)).to eq(@node)
       end
 
@@ -83,7 +83,7 @@ RSpec.describe NodesController, type: :controller do
         get :edit, id: @node
       end
 
-      it "assigns edit contact to @edit" do
+      it "assigns edit node to @edit" do
         expect(assigns(:node)).to eq(@node)
       end
 
