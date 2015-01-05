@@ -47,7 +47,7 @@ class NodesController < ApplicationController
     end
 
     def node_params
-      params.require(:node).permit(:ssid, :mac, :lng, :lat, :signal, :frequency, :capabilities)
+      params.require(:node).permit(:ssid, :mac, :frequency, :capabilities)
     end
 end
 

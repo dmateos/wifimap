@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe NodesController, type: :controller do
   describe "GET #index" do
     it "populates an array of nodes" do 
-      node = Node.create(ssid: "", mac: "", signal: 0)
+      node = FactoryGirl.create(:node)
       get :index
       expect(assigns(:nodes)).to eq([node])
     end
@@ -16,13 +16,13 @@ RSpec.describe NodesController, type: :controller do
 
   describe "GET #show" do
     it "assigns the requested node to @node" do
-      node = Node.create(ssid: "", mac: "", signal: 0)
+      node = FactoryGirl.create(:node)
       get :show, id: node
       expect(assigns(:node)).to eq(node)
     end
 
     it "renders the show template" do
-      get :show, id: Node.create(ssid: "", mac: "", signal: 0)
+      get :show, id: FactoryGirl.create(:node)
       expect(response).to render_template("show")
     end
   end
@@ -63,7 +63,7 @@ RSpec.describe NodesController, type: :controller do
     context "with admin user" do
       before :each do
         sign_in FactoryGirl.create(:admin_user)
-        @node = Node.create(ssid: "", mac: "", signal: 0)
+        @node = FactoryGirl.create(:node)
         get :edit, id: @node
       end
 
@@ -79,7 +79,7 @@ RSpec.describe NodesController, type: :controller do
     context "with normal user" do
       before :each do
         sign_in FactoryGirl.create(:user)
-        @node = Node.create(ssid: "", mac: "", signal: 0)
+        @node = FactoryGirl.create(:node)
         get :edit, id: @node
       end
 
@@ -101,12 +101,12 @@ RSpec.describe NodesController, type: :controller do
 
       it "creates the requested node" do
         expect {
-          post :create, node: {ssid: "test", mac: "00:00:00", signal: 10}
+          post :create, node: {ssid: "test", mac: "00:00:00"}
         }.to change(Node, :count).by(1)
       end
 
       it "redirects to the new node" do
-        post :create, node: {ssid: "test", mac: "00:00:00", signal: 10}
+        post :create, node: {ssid: "test", mac: "00:00:00"}
         expect(response).to redirect_to(Node.last)
       end
     end
@@ -118,12 +118,12 @@ RSpec.describe NodesController, type: :controller do
 
       it "fails to create the requested node" do
         expect {
-          post :create, node: {ssid: "test", mac: "00:00:00", signal: 10}
+          post :create, node: {ssid: "test", mac: "00:00:00"}
         }.to change(Node, :count).by(0)
       end
 
       it "redirects create to index" do
-        post :create, node: {ssid: "test", mac: "00:00:00", signal: 10}
+        post :create, node: {ssid: "test", mac: "00:00:00"}
         expect(response).to redirect_to(root_path)
       end
     end
@@ -131,27 +131,25 @@ RSpec.describe NodesController, type: :controller do
 
   describe "PUT #update" do
     before :each do
-      @node = Node.create(ssid: "", mac: "", signal: 0)
+      @node = FactoryGirl.create(:node)
     end
 
     context "with admin user" do
       before :each do
         sign_in FactoryGirl.create(:admin_user)
+        put :update, id: @node, node: {ssid: "test", mac: "00:00:00"}
       end
 
       it "located the requested node" do
-        put :update, id: @node, node: {ssid: "test", mac: "00:00:00", signal: 10}
         expect(assigns(:node)).to eq(@node)
       end 
 
       it "changes @nodes values" do
-        put :update, id: @node, node: { ssid: "test", mac: "00:00:00", signal: 11 }
         @node.reload
         expect(@node.ssid).to eq("test")
       end
 
       it "redirects to the updated node" do
-        put :update, id: @node, node: { ssid: "test", mac: "00:00:00", signal: 11 }
         expect(response).to redirect_to(@node)
       end
     end
@@ -159,21 +157,20 @@ RSpec.describe NodesController, type: :controller do
     context "with normal user" do 
       before do
         sign_in FactoryGirl.create(:user)
+        put :update, id: @node, node: {ssid: "test", mac: "00:00:00"}
       end
 
       it "located the requested node" do
-        put :update, id: @node, node: {ssid: "test", mac: "00:00:00", signal: 10}
         expect(assigns(:node)).to eq(@node)
       end
 
       it "does not change @nodes values" do
-        put :update, id: @node, node: { ssid: "test", mac: "00:00:00", signal: 11 }
+        ssid = @node.ssid
         @node.reload
-        expect(@node.ssid).to eq("")
+        expect(@node.ssid).to eq(ssid)
       end
 
       it "redirects update to index" do
-        put :update, id: @node, node: {ssid: "test", mac: "00:00:00", signal: 10}
         expect(response).to redirect_to(root_path)
       end
     end
@@ -181,7 +178,7 @@ RSpec.describe NodesController, type: :controller do
   
   describe "DELETE #destroy" do
     before :each do
-      @node = Node.create(ssid: "", mac: "", signal: 0)
+      @node = FactoryGirl.create(:node)
     end
 
     context "with admin user" do

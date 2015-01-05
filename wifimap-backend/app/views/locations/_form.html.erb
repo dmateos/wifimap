@@ -1,0 +1,52 @@
+<%= form_for @location, :html => { :class => "form-horizontal location" } do |f| %>
+
+    <% if @location.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@location.errors.count, "error") %> prohibited this location from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @location.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :lat, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :lat, :class => 'form-control' %>
+    </div>
+    <%= error_span(@location[:lat]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :lng, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :lng, :class => 'form-control' %>
+    </div>
+    <%= error_span(@location[:lng]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :signal, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :signal, :class => 'form-control' %>
+    </div>
+    <%= error_span(@location[:signal]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :node_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :node_id, :class => 'form-control' %>
+    </div>
+    <%= error_span(@location[:node_id]) %>
+  </div>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            locations_path, :class => 'btn btn-default' %>
+
+<% end %>

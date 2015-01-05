@@ -93,12 +93,6 @@ public class MainActivity extends ActionBarActivity implements APUpdateReceiver.
         }
     }
 
-    enum STATUS {
-        OK,
-        ERR_DUPE,
-        UPDATE_SIGNAL,
-    }
-
     public void onReceiveResult(int resultCode, Bundle resultData) {
         try {
             if (textView.getLineCount() >= 20) {
@@ -108,13 +102,10 @@ public class MainActivity extends ActionBarActivity implements APUpdateReceiver.
             JSONObject jsonData = new JSONObject(resultData.getString("result"));
             switch (jsonData.getInt("respcode")) {
                 case 0:
-                    textView.append("added new ap " + jsonData.getJSONObject("node").toString() + "\n");
+                    textView.append(jsonData.toString() + "\n");
                     break;
                 case 1:
-                    textView.append("already exists " + jsonData.getString("msg") + "\n");
-                    break;
-                case 2:
-                    textView.append("signal is better " + jsonData.getString("msg") + "\n");
+                    textView.append(jsonData.toString() + "\n");
                     break;
                 default:
                     textView.append("unknown message\n");

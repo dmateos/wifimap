@@ -11,34 +11,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150104053054) do
+ActiveRecord::Schema.define(version: 20150105062112) do
 
-  create_table "nodes", force: true do |t|
-    t.string   "ssid",                                null: false
-    t.string   "mac",                                 null: false
-    t.string   "capabilities"
-    t.integer  "frequency"
-    t.integer  "signal",                              null: false
-    t.float    "lng",          limit: 24
-    t.float    "lat",          limit: 24
-    t.integer  "seencount",               default: 1
-    t.integer  "updatecount",             default: 1
+  create_table "locations", force: :cascade do |t|
+    t.decimal  "lat",                  precision: 15, scale: 13, null: false
+    t.decimal  "lng",                  precision: 16, scale: 13, null: false
+    t.integer  "signal",     limit: 4,                           null: false
+    t.integer  "node_id",    limit: 4
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+  end
+
+  add_index "locations", ["node_id"], name: "index_locations_on_node_id", using: :btree
+
+  create_table "nodes", force: :cascade do |t|
+    t.string   "ssid",         limit: 255, null: false
+    t.string   "mac",          limit: 255, null: false
+    t.string   "capabilities", limit: 255
+    t.integer  "frequency",    limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
+  create_table "users", force: :cascade do |t|
+    t.string   "email",                  limit: 255, default: "",    null: false
+    t.string   "encrypted_password",     limit: 255, default: "",    null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          limit: 4,   default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.boolean  "admin"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.boolean  "admin",                  limit: 1,   default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -46,4 +52,5 @@ ActiveRecord::Schema.define(version: 20150104053054) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "locations", "nodes"
 end

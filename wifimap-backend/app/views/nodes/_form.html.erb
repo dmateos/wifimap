@@ -43,41 +43,6 @@
     </div>
     <%= error_span(@node[:frequency]) %>
   </div>
-  <div class="control-group">
-    <%= f.label :signal, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :signal, :class => 'form-control' %>
-    </div>
-    <%= error_span(@node[:signal]) %>
-  </div>
-  <div class="control-group">
-    <%= f.label :lng, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :lng, :class => 'form-control' %>
-    </div>
-    <%= error_span(@node[:lng]) %>
-  </div>
-  <div class="control-group">
-    <%= f.label :lat, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :lat, :class => 'form-control' %>
-    </div>
-    <%= error_span(@node[:lat]) %>
-  </div>
-  <div class="control-group">
-    <%= f.label :seencount, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :seencount, :class => 'form-control' %>
-    </div>
-    <%= error_span(@node[:seencount]) %>
-  </div>
-  <div class="control-group">
-    <%= f.label :updatecount, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :updatecount, :class => 'form-control' %>
-    </div>
-    <%= error_span(@node[:updatecount]) %>
-  </div>
 
 
   <%= f.submit nil, :class => 'btn btn-primary' %>

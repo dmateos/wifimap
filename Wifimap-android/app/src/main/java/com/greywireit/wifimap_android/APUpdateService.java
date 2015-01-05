@@ -46,26 +46,29 @@ public class APUpdateService extends IntentService {
         ResultReceiver receiver = intent.getParcelableExtra("receiver");
 
         String path = "http://wifimap.dev.mateos.cc/api/nodes";
-        //path = "http://10.10.0.204:3000/api/nodes";
+        path = "http://10.10.0.204:3000/api/nodes";
 
         for (ScanResult scan : wifiList) {
             try {
+                JSONObject request = new JSONObject();
                 JSONObject node = new JSONObject();
-                JSONObject params = new JSONObject();
+                JSONObject location = new JSONObject();
 
-                params.put("ssid", scan.SSID);
-                params.put("mac", scan.BSSID);
-                params.put("capabilities", scan.capabilities);
-                params.put("frequency", scan.frequency);
-                params.put("signal", scan.level);
-                params.put("lng", latestInfo.lastLong);
-                params.put("lat", latestInfo.lastLat);
+                node.put("ssid", scan.SSID);
+                node.put("mac", scan.BSSID);
+                node.put("capabilities", scan.capabilities);
+                node.put("frequency", scan.frequency);
 
-                node.put("node", params);
+                location.put("signal", scan.level);
+                location.put("lng", latestInfo.lastLong);
+                location.put("lat", latestInfo.lastLat);
+
+                request.put("node", node);
+                request.put("location", location);
 
                 DefaultHttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(path);
-                StringEntity se = new StringEntity(node.toString());
+                StringEntity se = new StringEntity(request.toString());
                 httpPost.setEntity(se);
                 httpPost.setHeader("Accept", "application/json");
                 httpPost.setHeader("Content-type", "application/json");
