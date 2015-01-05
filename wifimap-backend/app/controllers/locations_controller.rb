@@ -4,7 +4,8 @@ class LocationsController < ApplicationController
   respond_to :html
 
   def index
-    @locations = Location.all
+    @node = Node.find(params[:node_id])
+    @locations = @node.locations
     respond_with(@locations)
   end
 

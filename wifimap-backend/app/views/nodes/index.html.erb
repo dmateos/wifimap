@@ -10,6 +10,7 @@
       <th><%= model_class.human_attribute_name(:mac) %></th>
       <th><%= model_class.human_attribute_name(:capabilities) %></th>
       <th><%= model_class.human_attribute_name(:frequency) %></th>
+      <th> Location count </th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -20,8 +21,9 @@
         <td><%= link_to node.id, node_path(node) %></td>
         <td><%= node.ssid %></td>
         <td><%= node.mac %></td>
-        <td><%= node.capabilities %></td>
+        <td><%= node.capabilities.split('-').first %></td>
         <td><%= node.frequency %></td>
+        <td><%= link_to node.locations.count, node_locations_path(node) %></td>
         <td><%=l node.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
