@@ -46,7 +46,7 @@ public class APUpdateService extends IntentService {
         ResultReceiver receiver = intent.getParcelableExtra("receiver");
 
         String path = "http://wifimap.dev.mateos.cc/api/nodes";
-        path = "http://10.10.0.204:3000/api/nodes";
+        //path = "http://10.10.0.204:3000/api/nodes";
 
         for (ScanResult scan : wifiList) {
             try {

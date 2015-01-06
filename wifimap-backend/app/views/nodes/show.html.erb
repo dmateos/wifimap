@@ -14,6 +14,17 @@
   <dd><%= @node.frequency %></dd>
 </dl>
 
+<dl class="dl-horizontal">
+  <dt><strong> Signal </strong></dt>
+  <dd><%= @node.best_location.signal =%></dd>
+  <dt><strong> Lat </strong></dt>
+  <dd><%= @node.best_location.lat =%></dd>
+  <dt><strong> Long </strong></dt>
+  <dd><%= @node.best_location.lng =%></dd>
+  <dt><strong> Rough distance </strong></dt>
+  <dd><%= @node.best_location.rough_distance =%></dd>
+</dl>
+
 <%= link_to t('.back', :default => t("helpers.links.back")),
               nodes_path, :class => 'btn btn-default'  %>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),

@@ -9,6 +9,7 @@
       <th><%= model_class.human_attribute_name(:lat) %></th>
       <th><%= model_class.human_attribute_name(:lng) %></th>
       <th><%= model_class.human_attribute_name(:signal) %></th>
+      <th> Distance </th>
       <th><%= model_class.human_attribute_name(:node_id) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
@@ -21,6 +22,7 @@
         <td><%= location.lat %></td>
         <td><%= location.lng %></td>
         <td><%= location.signal %></td>
+        <td><%= location.rough_distance %></td>
         <td><%= location.node_id %></td>
         <td><%=l location.created_at %></td>
         <td>
