@@ -45,26 +45,27 @@ public class APUpdateService extends IntentService {
 
         ResultReceiver receiver = intent.getParcelableExtra("receiver");
 
-        String path = "http://wifimap.dev.mateos.cc/api/nodes";
-        //path = "http://10.10.0.204:3000/api/nodes";
+        String path = "http://wifimap.dev.mateos.cc/api/v1/add";
+        path = "http://10.10.0.204:3000/api/v1/add";
 
         for (ScanResult scan : wifiList) {
             try {
                 JSONObject request = new JSONObject();
-                JSONObject node = new JSONObject();
-                JSONObject location = new JSONObject();
+                JSONObject access_point = new JSONObject();
+                JSONObject signal_sample = new JSONObject();
 
-                node.put("ssid", scan.SSID);
-                node.put("mac", scan.BSSID);
-                node.put("capabilities", scan.capabilities);
-                node.put("frequency", scan.frequency);
 
-                location.put("signal", scan.level);
-                location.put("lng", latestInfo.lastLong);
-                location.put("lat", latestInfo.lastLat);
+                access_point.put("ssid", scan.SSID);
+                access_point.put("mac", scan.BSSID);
+                access_point.put("capabilities", scan.capabilities);
+                access_point.put("freq", scan.frequency);
 
-                request.put("node", node);
-                request.put("location", location);
+                signal_sample.put("signal", scan.level);
+                signal_sample.put("lng", latestInfo.lastLong);
+                signal_sample.put("lat", latestInfo.lastLat);
+
+                request.put("access_point", access_point);
+                request.put("signal_sample", signal_sample);
 
                 DefaultHttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(path);

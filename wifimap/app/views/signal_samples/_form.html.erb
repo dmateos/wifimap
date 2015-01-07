@@ -1,0 +1,52 @@
+<%= form_for [@access_point, @signal_sample], :html => { :class => "form-horizontal signal_sample" } do |f| %>
+
+    <% if @signal_sample.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@signal_sample.errors.count, "error") %> prohibited this signal_sample from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @signal_sample.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :signal, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :signal, :class => 'form-control' %>
+    </div>
+    <%= error_span(@signal_sample[:signal]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :lat, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :lat, :class => 'form-control' %>
+    </div>
+    <%= error_span(@signal_sample[:lat]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :lng, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :lng, :class => 'form-control' %>
+    </div>
+    <%= error_span(@signal_sample[:lng]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :access_point_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :access_point_id, :class => 'form-control' %>
+    </div>
+    <%= error_span(@signal_sample[:access_point_id]) %>
+  </div>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            access_point_signal_samples_path(@access_point), :class => 'btn btn-default' %>
+
+<% end %>

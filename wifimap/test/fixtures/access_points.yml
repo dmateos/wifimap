@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ssid: MyString
+  mac: MyString
+  freq: MyString
+  capabilities: MyString
+
+two:
+  ssid: MyString
+  mac: MyString
+  freq: MyString
+  capabilities: MyString

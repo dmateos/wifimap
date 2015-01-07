@@ -1,0 +1,44 @@
+<%- model_class = AccessPoint -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:ssid) %></th>
+      <th><%= model_class.human_attribute_name(:mac) %></th>
+      <th><%= model_class.human_attribute_name(:freq) %></th>
+      <th> Signal Samples </th>
+      <th><%= model_class.human_attribute_name(:capabilities) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @access_points.each do |access_point| %>
+      <tr>
+        <td><%= link_to access_point.id, access_point_path(access_point) %></td>
+        <td><%= access_point.ssid %></td>
+        <td><%= access_point.mac %></td>
+        <td><%= access_point.freq %></td>
+        <td><%= link_to access_point.signal_samples.count, access_point_signal_samples_path(access_point) %></td>
+        <td><%= access_point.capabilities %></td>
+        <td><%=l access_point.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_access_point_path(access_point), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      access_point_path(access_point),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_access_point_path,
+            :class => 'btn btn-primary' %>

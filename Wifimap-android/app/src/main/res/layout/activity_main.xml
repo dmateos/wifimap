@@ -10,4 +10,5 @@
         android:id="@+id/textView"
         android:layout_gravity="left|top"
         android:scrollbars = "vertical"  />
+
 </FrameLayout>

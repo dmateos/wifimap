@@ -1,0 +1,52 @@
+<%= form_for @access_point, :html => { :class => "form-horizontal access_point" } do |f| %>
+
+    <% if @access_point.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@access_point.errors.count, "error") %> prohibited this access_point from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @access_point.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :ssid, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :ssid, :class => 'form-control' %>
+    </div>
+    <%= error_span(@access_point[:ssid]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :mac, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :mac, :class => 'form-control' %>
+    </div>
+    <%= error_span(@access_point[:mac]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :freq, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :freq, :class => 'form-control' %>
+    </div>
+    <%= error_span(@access_point[:freq]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :capabilities, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :capabilities, :class => 'form-control' %>
+    </div>
+    <%= error_span(@access_point[:capabilities]) %>
+  </div>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            access_points_path, :class => 'btn btn-default' %>
+
+<% end %>
