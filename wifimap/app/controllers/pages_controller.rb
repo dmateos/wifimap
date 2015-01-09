@@ -1,7 +1,8 @@
 class PagesController < ApplicationController
   def index
-    @signal_samples = SignalSample.all.map { |s|
-      { lat: s.lat, lng: s.lng, infowindow: s.access_point.ssid }
+    @signal_samples = AccessPoint.all.map { |ap| 
+      signal_sample = ap.signal_samples.sort_by { |ss| ss.signal }.last
+      { lat: signal_sample.lat, lng: signal_sample.lng, infowindow: "#{ap.ssid} #{signal_sample.signal}" }
     }
   end
 end

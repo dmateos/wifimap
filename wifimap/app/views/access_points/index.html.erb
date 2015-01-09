@@ -23,7 +23,7 @@
         <td><%= access_point.mac %></td>
         <td><%= access_point.freq %></td>
         <td><%= link_to access_point.signal_samples.count, access_point_signal_samples_path(access_point) %></td>
-        <td><%= access_point.capabilities %></td>
+        <td><%= access_point.capabilities[0..5] %></td>
         <td><%=l access_point.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
