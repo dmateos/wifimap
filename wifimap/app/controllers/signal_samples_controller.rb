@@ -1,17 +1,24 @@
 class SignalSamplesController < ApplicationController
   before_action :set_signal_sample, only: [:show, :edit, :update, :destroy]
-  
+
   def index
     @access_point = AccessPoint.find(params[:access_point_id])
     @signal_samples = @access_point.signal_samples
+    @signal_samples_hash = @signal_samples.map { |ss|
+      { lat: ss.lat, lng: ss.lng, infowindow: "#{@access_point.ssid} #{ss.signal}"}
+    }
+
   end
 
   def show
+    @signal_samples_hash = @access_point.signal_samples.map { |ss|
+      { lat: ss.lat, lng: ss.lng, infowindow: @access_point.ssid }
+    }
   end
 
   def new
     @access_point = AccessPoint.find(params[:access_point_id])
-    @signal_sample = SignalSample.new 
+    @signal_sample = SignalSample.new
   end
 
   def create
