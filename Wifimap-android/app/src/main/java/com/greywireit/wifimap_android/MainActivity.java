@@ -115,24 +115,28 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    public int addCount = 0;
+    public int alReadySeen = 0;
+
     public void onReceiveResult(int resultCode, Bundle resultData) {
         try {
-            if (textView.getLineCount() >= 20) {
-                textView.setText("Wifimap 0.1\n---------\n");
-            }
+            textView.setText("Wifimap 0.1\n---------\n");
+            textView.append("Total adds: " + addCount + "\n");
+            textView.append("Total seen: " + alReadySeen + "\n");
+            textView.append("---------\n");
 
             JSONObject jsonData = new JSONObject(resultData.getString("result"));
             switch (jsonData.getInt("respcode")) {
                 case 0:
-                    textView.append(jsonData.toString() + "\n");
+                    addCount++;
                     break;
                 case 1:
-                    textView.append(jsonData.toString() + "\n");
+                    alReadySeen++;
                     break;
                 default:
-                    textView.append("unknown message\n");
                     break;
             }
+
         } catch (Exception e) {
             //Log.v("debug2", e.getMessage());
             //Log.v("debug2", resultData.getString(("result")));
