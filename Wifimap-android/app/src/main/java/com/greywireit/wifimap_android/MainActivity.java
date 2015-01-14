@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.littlefluffytoys.littlefluffylocationlibrary.LocationInfo;
@@ -22,11 +23,14 @@ import com.littlefluffytoys.littlefluffylocationlibrary.LocationLibrary;
 import org.json.JSONObject;
 
 
-public class MainActivity extends ActionBarActivity implements APUpdateReceiver.Receiver {
+public class MainActivity extends ActionBarActivity
+        implements APUpdateReceiver.Receiver, View.OnClickListener {
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
     private APUpdateReceiver apUpdateReceiver;
     private TextView textView;
+    private Button startButton;
+    private boolean isStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +42,39 @@ public class MainActivity extends ActionBarActivity implements APUpdateReceiver.
                     .commit();
         }
 
+        LocationLibrary.initialiseLibrary(getBaseContext(), "com.greywireit.wifimap_android");
+
         textView = (TextView) findViewById(R.id.textView);
         textView.setText("Wifimap 0.1\n---------\n");
 
-        LocationLibrary.initialiseLibrary(getBaseContext(), "com.greywireit.wifimap_android");
+        startButton = (Button)findViewById(R.id.button);
+        startButton.setOnClickListener(this);
+        startButton.setText("start");
+        isStart = true;
 
         apUpdateReceiver = new APUpdateReceiver(new Handler());
         apUpdateReceiver.setReceiver(this);
 
         Intent intent = new Intent(this, APUpdateService.class);
         intent.putExtra("receiver", apUpdateReceiver);
-
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 10, alarmIntent);
     }
+
+    public void onClick(View v) {
+        if(isStart) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 10, alarmIntent);
+            textView.append("started scanner\n");
+            isStart = false;
+            startButton.setText("stop");
+        } else {
+            alarmManager.cancel(alarmIntent);
+            textView.append("stopped scanner\n");
+            isStart = true;
+            startButton.setText("start");
+
+        }
+     }
 
 
     @Override

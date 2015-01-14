@@ -63,6 +63,8 @@ public class APUpdateService extends IntentService {
                 signal_sample.put("signal", scan.level);
                 signal_sample.put("lng", latestInfo.lastLong);
                 signal_sample.put("lat", latestInfo.lastLat);
+                //TODO
+                //Add accuracy and shit
 
                 request.put("access_point", access_point);
                 request.put("signal_sample", signal_sample);

@@ -13,9 +13,9 @@
   handler = Gmaps.build('Google');
   handler.buildMap({ provider : {}, internal: {id: 'map'}}, function() {
     markers = handler.addMarkers(<%=raw @signal_samples_hash.to_json %>);
+    handler.getMap().setZoom(18);
     handler.bounds.extendWith(markers);
     handler.fitMapToBounds();
-    handler.getMap().setZoom(18);
   });
 </script>
 

@@ -1,9 +1,9 @@
 module Api::V1
   class AccessPointsApiController < ApplicationController
     protect_from_forgery with: :null_session
-     
+
     def create_or_update
-      aphandler = APhandler.new
+      #aphandler = APhandler.new
 
       if access_point_already_exists?
         add_signal_sample_to_access_point
